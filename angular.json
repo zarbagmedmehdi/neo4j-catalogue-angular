@@ -120,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "catalogue"
+  "defaultProject": "catalogue",
+  "cli": {
+    "analytics": false
+  }
 }

@@ -4,15 +4,25 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { ContentComponent } from './search/content/content.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {SearchService} from './services/search.service';
+import {HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+
+    ContentComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [SearchService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

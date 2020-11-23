@@ -8,12 +8,18 @@ import { ContentComponent } from './search/content/content.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SearchService} from './services/search.service';
 import {HttpClientModule} from '@angular/common/http';
+import { AjoutComponent } from './magasin/ajout/ajout.component';
+import { AjoutProduitComponent } from './produit/ajout-produit/ajout-produit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
 
     ContentComponent,
+
+    AjoutComponent,
+
+    AjoutProduitComponent,
   ],
   imports: [
     BrowserModule,

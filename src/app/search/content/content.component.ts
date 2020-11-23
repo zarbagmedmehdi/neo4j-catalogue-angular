@@ -3,11 +3,15 @@ import {$} from 'protractor';
 import {SearchService} from '../../services/search.service';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Search} from '../../model/search.model';
+import {Produit} from '../../models/Produit';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Comment} from '../../models/Comment';
+import {AjoutService} from '../../services/ajout.service';
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.css']
+  styleUrls: ['./content.component.css'],
 })
 export class ContentComponent implements OnInit {
   magasins: any;
@@ -21,21 +25,27 @@ export class ContentComponent implements OnInit {
   selectedPriceMax: any;
   searchText: any;
   criteria:Search;
-
+  comment :Comment;
   selectedProduct:any;
   showCatalogue:boolean=true;
   selectedProductCaracteristiques: any;
 
-  constructor(private http: HttpClient, private searchService: SearchService) {
+  constructor(private ajoutService :AjoutService,private formbuilder: FormBuilder,private http: HttpClient, private searchService: SearchService) {
   }
 
   ngOnInit(): void {
+
     this.selectedProductCaracteristiques={};
     this.produits=new Array();
     this.getMagasins();
     this.getCategories();
     this.getMarques();
-
+    let patterns={
+      commentaire:['', Validators.compose([ ])],
+      stars:['', Validators.compose([Validators.required, ])],
+      nom:['', Validators.compose([Validators.required, ])],
+    };
+    this.commentForm=this.formbuilder.group(patterns);
   }
 
   initSelectedFields(){
@@ -83,6 +93,7 @@ export class ContentComponent implements OnInit {
   //     this.categories = data;
   //   });
   // }
+  commentForm: FormGroup;
 
   findProductByMagasin(magasinId: any) {
     console.log(magasinId);
@@ -173,6 +184,8 @@ export class ContentComponent implements OnInit {
 
   showDetails(product: any) {
     this.selectedProduct=product;
+    // @ts-ignore
+    this.comment={productId:this.selectedProduct.id, nom:"", stars:0, commentaire:""};
     this.setSelectedproductCaracteristiques(product);
     this.showCatalogue=false;
   }
@@ -188,5 +201,17 @@ export class ContentComponent implements OnInit {
     }
     console.log("----------");
     console.log(this.selectedProductCaracteristiques);
+  }
+
+
+  persistComment() {
+    this.ajoutService.persistComment(this.comment,data => {
+      this.commentForm.reset();
+      alert("Rating enregistré");
+    })
+  }
+
+  setStarValue(number: number) {
+    this.comment.stars=number;
   }
 }

@@ -1,0 +1,401 @@
+<div class="app-content content">
+  <div class="content-overlay"></div>
+  <div class="header-navbar-shadow"></div>
+  <div class="content-wrapper">
+    <div class="content-header row">
+      <div class="content-header-left col-md-9 col-12 mb-2">
+        <div class="row breadcrumbs-top">
+          <div class="col-12">
+            <h2 class="content-header-title float-left mb-0">Nos Magasins</h2>
+            <div class="breadcrumb-wrapper col-12">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a (click)="showCatalogue=true;">Catalogue</a>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-detached content-right">
+      <div class="content-body" *ngIf="showCatalogue">
+        <section id="ecommerce-header">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="ecommerce-header-items">
+                <div class="result-toggler">
+                  <button class="navbar-toggler shop-sidebar-toggler" type="button" data-toggle="collapse">
+                    <span class="navbar-toggler-icon d-block d-lg-none"><i class="feather icon-menu"></i></span>
+                  </button>
+                  <div class="search-results">
+                    {{produits.length}} Resultats trouvés
+                  </div>
+                </div>
+                <div class="view-options">
+                  <select class="price-options form-control" id="ecommerce-price-options">
+                    <option selected>Featured</option>
+                    <option value="1">Lowest</option>
+                    <option value="2">Highest</option>
+                  </select>
+                  <div class="view-btn-option">
+                    <button class="btn btn-white view-btn grid-view-btn active">
+                      <i class="feather icon-grid"></i>
+                    </button>
+                    <button class="btn btn-white list-view-btn view-btn">
+                      <i class="feather icon-list"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!--        Search bar start-->
+        <section id="ecommerce-searchbar">
+          <div class="row mt-1">
+            <div class="col-sm-12">
+              <fieldset class="form-group position-relative">
+                <input (keyup)="setText()" [(ngModel)]="searchText" type="text" class="form-control search-product"
+                       id="iconLeft5" placeholder="Rechercher ici...">
+                <div class="form-control-position">
+                  <i class="feather icon-search"></i>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </section>
+        <!--        Search bar end-->
+
+        <!--        products list start-->
+        <section id="ecommerce-products" class="grid-view">
+
+
+          <div class="card ecommerce-card" *ngFor="let produit of produits">
+            <div class="card-content">
+              <div class="item-img text-center">
+                                <a href="app-ecommerce-details.html">
+                                  <img class="img-fluid" [src]="produit.image" width="200px" height="150px" alt="img-placeholder"></a>
+              </div>
+              <div class="card-body">
+                <div class="item-wrapper">
+                  <div class="item-rating">
+                    <div class="badge badge-primary badge-md">
+                      <span>4</span> <i class="feather icon-star"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="item-price">
+                      {{produit.prix}} DH
+                    </h6>
+                  </div>
+                </div>
+                <div class="item-name">
+                  <a (click)="showDetails(produit)">{{produit.libelle}}</a>
+                  <p class="item-company">Par <span class="company-name">{{produit.marque}}</span></p>
+                </div>
+                <div>
+                  <p class="item-description">
+                    {{produit.description}}
+                  </p>
+                </div>
+              </div>
+              <div class="item-options text-center">
+                <div class="item-wrapper">
+                  <div class="item-rating">
+                    <div class="badge badge-primary badge-md">
+                      <span>4</span> <i class="feather icon-star"></i>
+                    </div>
+                  </div>
+                  <div class="item-cost">
+                    <h6 class="item-price">
+                      {{produit.prix}} DH
+                    </h6>
+                  </div>
+                </div>
+                <div class="cart">
+                  <i class="feather icon-shopping-cart"></i> <span class="add-to-cart">Plus de Détails</span> <a
+                  href="app-ecommerce-checkout.html" class="view-in-cart d-none">Plus de Détailst</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </section>
+        <!--        produts list end-->
+
+
+      </div>
+      <div class="content-body" *ngIf="!showCatalogue">
+        <!-- app ecommerce details start -->
+        <section class="app-ecommerce-details">
+          <div class="card">
+            <div class="card-body">
+              <div class="row mb-5 mt-2">
+                <div class="col-12 col-md-5 d-flex align-items-center justify-content-center mb-2 mb-md-0">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <img [src]="selectedProduct.image" width="300px" height="200px" class="img-fluid" alt="product image">
+                  </div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h5>{{selectedProduct.libelle}}
+                  </h5>
+                  <p class="text-muted">Par {{selectedProduct.marque}}</p>
+                  <div class="ecommerce-details-price d-flex flex-wrap">
+
+                    <p class="text-primary font-medium-3 mr-1 mb-0">{{selectedProduct.prix}} DH</p>
+                    <span class="pl-1 font-medium-3 border-left">
+                                            <i class="feather icon-star text-secondary"></i>
+                                            <i class="feather icon-star text-secondary"></i>
+                                            <i class="feather icon-star text-secondary"></i>
+                                            <i class="feather icon-star text-secondary"></i>
+                                            <i class="feather icon-star text-secondary"></i>
+                                        </span>
+                    <span class="ml-50 text-dark font-medium-1">0 ratings</span>
+                  </div>
+                  <hr>
+                  <p>{{selectedProduct.description}}</p>
+                  <label class="font-weight-bold">Categories</label>
+                  <ul>
+                    <li *ngFor="let c of selectedProduct.categories">{{c}}
+                    </li>
+                  </ul>
+
+                  <hr>
+
+                  <div class="d-flex flex-column flex-sm-row">
+                    <button class="btn btn-primary mr-0 mr-sm-1 mb-1 mb-sm-0" disabled><i class="feather icon-shopping-cart mr-25"></i>Ajouter au panier</button>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-2 text-center">
+            <h2>Fiche Techniques:</h2>
+          </div>
+            <div class="table-responsive">
+              <table class="table">
+                <tbody>
+                <tr *ngFor="let caracteristiques of selectedProductCaracteristiques | keyvalue">
+                  <td>{{caracteristiques.key}}</td>
+                  <td>{{caracteristiques.value}}</td>
+                </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 mb-2 text-center" *ngIf="selectedProduct.commentaires!=null">
+                <h2>Commentaires:</h2>
+              </div>
+              <div class="swiper-responsive-breakpoints swiper-container px-4 py-2">
+                <div class="swiper-wrapper">
+
+
+                  <div class="swiper-slide rounded swiper-shadow" *ngFor="let commentaire of selectedProduct.commentaires">
+                    <div class="item-heading">
+                      <div class="product-rating" >
+                        <i   [ngClass]="(star<commentaire.stars)?'feather icon-star text-warning' :'feather icon-star text-secondary'" *ngFor="let star of [0,1,2,3,4]" ></i>
+                      </div>
+                      <p class="text-truncate mb-0">
+                        {{commentaire.commentaire}}
+                      </p>
+                      <p>
+                        <small>Par: {{commentaire.nom}}</small>
+                        <small>, Le : {{commentaire.date}}</small>
+                      </p>
+                    </div>
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+              </div>
+        </section>
+        <!-- app ecommerce details end -->
+
+      </div>
+
+    </div>
+
+
+    <div class="sidebar-detached sidebar-left" *ngIf="showCatalogue">
+      <div class="sidebar">
+        <!-- Ecommerce Sidebar Starts -->
+        <div class="sidebar-shop" id="ecommerce-sidebar-toggler">
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h6 class="filter-heading d-none d-lg-block">Filtres</h6>
+            </div>
+          </div>
+          <span class="sidebar-close-icon d-block d-md-none">
+                            <i class="feather icon-x"></i>
+                        </span>
+          <div class="card">
+            <div class="card-body">
+
+              <!-- Categories Starts -->
+              <div id="product-magasins">
+                <div class="product-category-title">
+                  <h6 class="filter-title mb-1">Magasins</h6>
+                </div>
+                <ul class="list-unstyled categories-list">
+                  <li *ngFor="let magasin of magasins">
+                <span class="vs-radio-con vs-radio-primary py-25">
+                  <input (click)="setSelectedMagasinId(magasin.id)" name="radio-magasins" type="radio"
+                         value="{{magasin.nom}}">
+                  <span class="vs-radio">
+                    <span class="vs-radio--border"></span>
+                    <span class="vs-radio--circle"></span>
+                  </span>
+                  <span class="ml-50">{{magasin.nom}}</span>
+                </span>
+                  </li>
+
+                </ul>
+              </div>
+              <!-- Categories Ends -->
+
+              <!-- Categories Starts -->
+              <div id="product-categories" *ngIf="categories!=null">
+                <div class="product-category-title">
+                  <h6 class="filter-title mb-1">Categories</h6>
+                </div>
+                <ul class="list-unstyled categories-list">
+                  <li *ngFor="let categorie of categories">
+                <span class="vs-radio-con vs-radio-primary py-25">
+                  <input name="radio-categories" type="radio" (click)="setSelectedCategorie(categorie)"
+                         value="{{categorie}}">
+                  <span class="vs-radio">
+                    <span class="vs-radio--border"></span>
+                    <span class="vs-radio--circle"></span>
+                  </span>
+                  <span class="ml-50">{{categorie}}</span>
+                </span>
+                  </li>
+
+                </ul>
+              </div>
+              <!-- Categories Ends -->
+              <hr>
+
+              <!-- Brands -->
+              <div class="brands">
+                <div class="brand-title mt-1 pb-1">
+                  <h6 class="filter-title mb-0">Marques</h6>
+                </div>
+                <div class="form-group">
+                  <select [(ngModel)]="selectedMarques" class="select2 form-control" multiple="multiple" #t
+                          (change)="changeSelectedMarques(t.value)">
+                    <option *ngFor="let marque of marques" value="{{marque}}"> {{marque}}</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <!-- /Brand -->
+              <hr>
+
+
+              <div class="multi-range-price">
+                <div class="multi-range-title pb-75">
+                  <h6 class="filter-title mb-0">Prix</h6>
+                </div>
+                <ul class="list-unstyled price-range" id="price-range">
+                  <li>
+                <span class="vs-radio-con vs-radio-primary py-25">
+                    <input type="radio" name="price-range" checked value="false" (click)="setSelectedPriceRange(null,null)">
+                    <span class="vs-radio">
+                        <span class="vs-radio--border"></span>
+                        <span class="vs-radio--circle"></span>
+                    </span>
+                    <span class="ml-50">All</span>
+                </span>
+                  </li>
+                  <li>
+                <span class="vs-radio-con vs-radio-primary py-25">
+                    <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(0,100)">
+                    <span class="vs-radio">
+                        <span class="vs-radio--border"></span>
+                        <span class="vs-radio--circle"></span>
+                    </span>
+                    <span class="ml-50"> &lt;=100 DH</span>
+                </span>
+                  </li>
+                  <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(100,500)">
+                                                <span class="vs-radio">
+                                                    <span class="vs-radio--border"></span>
+                                                    <span class="vs-radio--circle"></span>
+                                                </span>
+                                                <span class="ml-50">100 DH - 500 DH</span>
+                                            </span>
+                  </li>
+                  <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(500,1500)">
+                                                <span class="vs-radio">
+                                                    <span class="vs-radio--border"></span>
+                                                    <span class="vs-radio--circle"></span>
+                                                </span>
+                                                <span class="ml-50">500 DH - 1500 DH</span>
+                                            </span>
+                  </li>
+                  <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(1500,3000)">
+                                                <span class="vs-radio">
+                                                    <span class="vs-radio--border"></span>
+                                                    <span class="vs-radio--circle"></span>
+                                                </span>
+                                                <span class="ml-50">1500 DH - 3000 DH</span>
+                                            </span>
+                  </li>
+                  <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(3000,5000)">
+                                                <span class="vs-radio">
+                                                    <span class="vs-radio--border"></span>
+                                                    <span class="vs-radio--circle"></span>
+                                                </span>
+                                                <span class="ml-50">3000 DH - 5000 DH</span>
+                                            </span>
+                  </li>
+                  <li>
+                                            <span class="vs-radio-con vs-radio-primary py-25">
+                                                <input type="radio" name="price-range" value="false" (click)="setSelectedPriceRange(5000,null)">
+                                                <span class="vs-radio">
+                                                    <span class="vs-radio--border"></span>
+                                                    <span class="vs-radio--circle"></span>
+                                                </span>
+                                                <span class="ml-50">&gt;= 5000 DH</span>
+                                            </span>
+                  </li>
+
+                </ul>
+              </div>
+              <!-- /Price Filter -->
+              <hr>
+
+              <div id="clear-filters">
+                <button class="btn btn-block btn-primary" (click)="initSelectedFields()">CLEAR ALL FILTERS</button>
+              </div>
+              <!-- Clear Filters Ends -->
+
+            </div>
+          </div>
+        </div>
+        <!-- Ecommerce Sidebar Ends -->
+
+      </div>
+    </div>
+
+
+  </div>
+</div>

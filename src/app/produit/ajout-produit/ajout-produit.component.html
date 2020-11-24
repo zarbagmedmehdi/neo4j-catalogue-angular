@@ -1,0 +1,76 @@
+
+<div class="row">
+  <div class="col-md-2 p-4">
+    <div  *ngFor="let mag of selectedmagasins;let index = index;">
+      <label for="prix">{{mag.nom}} stock</label>
+      <input type="number" [(ngModel)]="magasinStock[index]"  class="form-control"  >
+    </div>
+  </div>
+  <div class="col-md-5">
+
+    <form   [formGroup]="produitForm"  (ngSubmit)="persistProduit()" class="text-center border border-light p-4" >
+
+      <p class="h4 mb-4">Ajout de produit:</p>
+
+      <div class="row">
+        <div class="col">
+          <input type="text"  [(ngModel)]="produit.reference" class="form-control mb-4" placeholder="reference" formControlName="reference" id="areference">
+        </div>
+        <div class="col">
+          <input type="text"  [(ngModel)]="produit.libelle" class="form-control mb-4"  placeholder="libelle"formControlName="libelle" id="libelle">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+
+          <input type="text" [(ngModel)]="produit.marque"  class="form-control mb-4" placeholder="marque"formControlName="marque" id="marque">
+        </div>
+        <div class="col">
+          <input type="number" [(ngModel)]="produit.prix"   class="form-control mb-4" placeholder="prix" formControlName="prix" id="prix">
+        </div>
+      </div>
+      <input type="text"  placeholder="description" [(ngModel)]="produit.description" class="form-control mb-4" formControlName="description" id="description">
+      <input (ngModelChange)="cleanCaracters(nombreCaractere)" type="number" placeholder="Nb caractéres" formControlName="nombreCaractere" [(ngModel)]="nombreCaractere"  class="form-control"  >
+
+      <div class="row">
+        <div class="col">
+          <label>Magasins :</label>
+          <select multiple (change)="clean()"  [(ngModel)]="selectedmagasins"   formControlName="magasinsNames" class="browser-default custom-select mb-2"  id="magasin">
+            <option *ngFor="let magasin of magasins;" [ngValue]="magasin" >{{magasin.nom}}</option>
+          </select>
+        </div>
+        <div class="col">
+
+          <label >categories</label>
+
+          <select  [(ngModel)]="produit.categories"  multiple formControlName="categories" class="form-control"  id="categorie">
+            <option *ngFor="let cat of initialcategories;" [ngValue]="cat" >{{cat}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <input type="file" accept="image/*" (change)="changeListener($event)">
+      </div>
+      <div class="row justify-content-center">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </form>
+
+  </div>
+  <div class="col-md-4 p-4">
+    <div  *ngFor="let i of fakeArray(nombreCaractere); let index = index;">
+      <div class="row">
+        <div class="col">
+          <label>caractére {{index+1}}</label>
+          <input  [(ngModel)]="caracteristiques[index]" type="string"  class="form-control"  >
+        </div>
+        <div class="col">
+          <label>valeur{{index+1}}</label>
+
+          <input [(ngModel)]="valeurs[index]"  type="string"  class="form-control"   >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

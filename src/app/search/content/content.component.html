@@ -146,13 +146,9 @@
 
                     <p class="text-primary font-medium-3 mr-1 mb-0">{{selectedProduct.prix}} DH</p>
                     <span class="pl-1 font-medium-3 border-left">
-                                            <i class="feather icon-star text-secondary"></i>
-                                            <i class="feather icon-star text-secondary"></i>
-                                            <i class="feather icon-star text-secondary"></i>
-                                            <i class="feather icon-star text-secondary"></i>
-                                            <i class="feather icon-star text-secondary"></i>
+                                            <i class="feather icon-star text-primary"></i>
                                         </span>
-                    <span class="ml-50 text-dark font-medium-1">0 ratings</span>
+                    <span class="ml-50 text-dark font-medium-1">{{selectedProductStarsMean.toFixed(2)}} ratings</span>
                   </div>
                   <hr>
                   <p>{{selectedProduct.description}}</p>

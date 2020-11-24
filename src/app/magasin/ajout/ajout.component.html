@@ -1,0 +1,107 @@
+<div class="row">
+  <div class="col-md-4">
+    <div style="margin-top: 70px;" class=" mt-20 d-flex justify-content-center">
+
+      <h2 class="mt-20">Intefrace des operations:</h2>
+    </div>
+    <div class=" mt-10 d-flex justify-content-center">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <a type="button"  (click)="magasinShow()" class="ml-10 btn btn-primary">magasin</a>
+        <button type="button" (click)="produitShow()"class="btn btn-primary">produit</button>
+      </div>
+    </div>
+
+    <div *ngIf="showm"  class=" mt-5 row d-flex justify-content-center ">
+
+      <form [formGroup]="magasinForm"  (ngSubmit)="persistMagasin()">
+        <div class="form-group">
+          <h3>{{op}} de magagin</h3>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input formControlName="nom" [(ngModel)]="magasin.nom"
+                 type="text" class="form-control" id="nom" aria-describedby="nomHelp" placeholder="Enter nom">
+          <small id="emailHelp" class="form-text text-muted">Ce nom doit etre unique</small>
+        </div>
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <input formControlName="adresse" [(ngModel)]="magasin.adresse" type="text" class="form-control" id="adresse" placeholder="Adresse">
+        </div>
+        <div class="form-group">
+          <label for="ville">ville</label>
+          <input  formControlName="ville" [(ngModel)]="magasin.ville" type="text" class="form-control" id="ville" placeholder="ville">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+      </form>
+    </div>
+    <div *ngIf="showc"  class=" mt-5 d-flex justify-content-center">
+
+      <!--  <form [formGroup]="categorieForm"  (ngSubmit)="persistCategorie()">
+          <div class="form-group">
+            <h3>Ajout de categorie:</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="nom">nom</label>
+            <input [(ngModel)]="categorie" (change)="loadMagasins($event)"
+                   formControlName="nom" type="text" class="form-control" id="nomC" placeholder="Catagorie">
+          </div>
+
+          <div class="form-group">
+            <label for="magasins">magasins</label>
+            <select  [(ngModel)]="selectedMagasins"  multiple formControlName="magasins" class="form-control"  id="magasins">
+              <option *ngFor="let magasin of magasins;" [ngValue]="magasin.nom" >{{magasin.nom}}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>-->
+    </div>
+    <div *ngIf="showm || showc"  class=" mt-5  d-flex justify-content-center ">
+
+
+    </div>
+
+
+
+
+
+
+  </div>
+  <div *ngIf="showm || showc"  class="col-md-6  " style="margin-top: 70px;">
+    <h2 class="mt-20">Table des magasins :</h2>
+
+    <table *ngIf="magasins.length>0" class="table  m-5  ">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">nom</th>
+        <th scope="col">adresse</th>
+        <th scope="col">ville</th>
+        <th scope="col">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr  *ngFor="let magasin of magasins;let index = index;">
+        <th scope="row">{{index+1}}</th>
+        <td>{{magasin.nom}}</td>
+        <td>{{magasin.adresse}}</td>
+        <td>{{magasin.ville}}</td>
+        <button type="button" (click)="deleteMagasin(magasin.id)" class="btn btn-primary">supprimer</button>
+        <button type="button" (click)="chargerMagasin(magasin)" class="btn btn-primary">Modifier</button>
+
+      </tr>
+
+      </tbody>
+    </table>
+    <div *ngIf="magasins.length==0">
+      <h4 class="mt-20">Aucune Magasin</h4>
+
+    </div>
+  </div>
+</div>
+<div *ngIf="showp"  class=" mt-5 ">
+  <app-ajout-produit></app-ajout-produit>
+
+</div>

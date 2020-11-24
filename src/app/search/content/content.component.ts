@@ -29,6 +29,8 @@ export class ContentComponent implements OnInit {
   selectedProduct:any;
   showCatalogue:boolean=true;
   selectedProductCaracteristiques: any;
+  selectedProductStarsMean:number;
+
 
   constructor(private ajoutService :AjoutService,private formbuilder: FormBuilder,private http: HttpClient, private searchService: SearchService) {
   }
@@ -46,6 +48,7 @@ export class ContentComponent implements OnInit {
       nom:['', Validators.compose([Validators.required, ])],
     };
     this.commentForm=this.formbuilder.group(patterns);
+    this.selectedProductStarsMean=0;
   }
 
   initSelectedFields(){
@@ -187,6 +190,7 @@ export class ContentComponent implements OnInit {
     // @ts-ignore
     this.comment={productId:this.selectedProduct.id, nom:"", stars:0, commentaire:""};
     this.setSelectedproductCaracteristiques(product);
+    this.getMeanStars(this.selectedProduct.commentaires);
     this.showCatalogue=false;
   }
 
@@ -204,6 +208,8 @@ export class ContentComponent implements OnInit {
   }
 
 
+
+
   persistComment() {
     this.ajoutService.persistComment(this.comment,data => {
       this.commentForm.reset();
@@ -213,5 +219,15 @@ export class ContentComponent implements OnInit {
 
   setStarValue(number: number) {
     this.comment.stars=number;
+  }
+
+  getMeanStars(commentaires: any) {
+    if (commentaires==null || commentaires.length==0) this.selectedProductStarsMean=0;
+    else{
+      for (let i=0;i<commentaires.length;i++){
+        this.selectedProductStarsMean+=commentaires[i].stars;
+      }
+      this.selectedProductStarsMean/=commentaires.length;
+    }
   }
 }

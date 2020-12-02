@@ -8,6 +8,7 @@
       <div class="btn-group" role="group" aria-label="Basic example">
         <a type="button"  (click)="magasinShow()" class="ml-10 btn btn-primary">magasin</a>
         <button type="button" (click)="produitShow()"class="btn btn-primary">produit</button>
+        <button type="button" (click)="affectShow()"class="btn btn-primary">Affectation</button>
       </div>
     </div>
 
@@ -37,25 +38,32 @@
     </div>
     <div *ngIf="showc"  class=" mt-5 d-flex justify-content-center">
 
-      <!--  <form [formGroup]="categorieForm"  (ngSubmit)="persistCategorie()">
+        <form [formGroup]="affectationForm" (ngSubmit)="persistAffectation()">
           <div class="form-group">
-            <h3>Ajout de categorie:</h3>
+            <h3>Affecter des produits:</h3>
           </div>
 
           <div class="form-group">
-            <label for="nom">nom</label>
-            <input [(ngModel)]="categorie" (change)="loadMagasins($event)"
-                   formControlName="nom" type="text" class="form-control" id="nomC" placeholder="Catagorie">
-          </div>
-
-          <div class="form-group">
-            <label for="magasins">magasins</label>
-            <select  [(ngModel)]="selectedMagasins"  multiple formControlName="magasins" class="form-control"  id="magasins">
-              <option *ngFor="let magasin of magasins;" [ngValue]="magasin.nom" >{{magasin.nom}}</option>
+            <label for="nom">Magasin</label>
+            <select  [(ngModel)]="affectation.magasinId" formControlName="affectedMagasinId" class="form-control" >
+              <option *ngFor="let mag of magasins;" [ngValue]="mag.id">{{mag.nom}}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
-        </form>-->
+
+          <div class="form-group">
+            <label for="nom">Produits</label>
+            <select  [(ngModel)]="affectation.productId" formControlName="affectedProduitId" class="form-control" >
+              <option *ngFor="let prod of produits;" [ngValue]="prod.id">{{prod.libelle}} ({{prod.reference}})</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label >Quantité</label>
+            <input formControlName="affectedQte" [(ngModel)]="affectation.qte"
+                   type="number" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">Affecter</button>
+        </form>
     </div>
     <div *ngIf="showm || showc"  class=" mt-5  d-flex justify-content-center ">
 

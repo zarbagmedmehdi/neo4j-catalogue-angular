@@ -4,6 +4,7 @@ import {Magasin} from "../models/Magasin";
 import {catchError, retry} from "rxjs/operators";
 import {throwError} from "rxjs";
 import {Produit} from "../models/Produit";
+import {StockProduit} from '../models/StockProduit';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AjoutService {
 
 
   constructor(private http: HttpClient) { }
-  url = 'http://localhost:8080/';
+  url = 'http://localhost:8090/';
   handleError(error) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -34,7 +35,7 @@ export class AjoutService {
       )
   }
   updateMagasin(magasin:Magasin,callback) {
-    return this.http.put<Magasin>(this.url+'magasin/update/', magasin)
+    return this.http.put<Magasin>(this.url+'magasin/', magasin)
       .pipe(retry(1), catchError(this.handleError)).subscribe(
         data =>{
 
@@ -79,7 +80,14 @@ export class AjoutService {
       )
   }
 
-
+  persistAffectation(affectation:StockProduit,callback) {
+    return this.http.get(this.url+'produit/'+affectation.productId+'/'+affectation.qte+'/magasin/'+affectation.magasinId)
+      .pipe(retry(1), catchError(this.handleError)).subscribe(
+        data =>{
+          callback(data)
+        }
+      )
+  }
 
 
 }

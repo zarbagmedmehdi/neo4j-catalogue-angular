@@ -6,6 +6,7 @@ import {Categorie} from "../../models/Categorie";
 import {FindService} from "../../services/find.service";
 import {catchError, retry} from "rxjs/operators";
 import {Produit} from "../../models/Produit";
+import {StockProduit} from '../../models/StockProduit';
 
 @Component({
   selector: 'app-ajout',
@@ -21,10 +22,16 @@ export class AjoutComponent implements OnInit {
   magasinForm: FormGroup;
   categorie:string;
   categorieForm: FormGroup;
+  affectationForm: FormGroup;
   magasins: Magasin[]=[];
   selectedMagasins: string[];
   op: String="Ajout";
 
+  affectedMagasinId:number;
+  affectedProduitId: number;
+  produits: Produit[];
+  affectedQte: number;
+  affectation: StockProduit;
   constructor(private formbuilder: FormBuilder,private findService:FindService,private  ajoutServie:AjoutService) { }
 
   ngOnInit(): void {
@@ -32,6 +39,7 @@ export class AjoutComponent implements OnInit {
       this.magasins=data
     });
     this.magasin= {nom:"",adresse:"",ville:"", };
+    this.affectation={productId:0,magasinId:0,qte:0};
     this.showHide(true,false,false);
     let patterns={
       nom:['', Validators.compose([Validators.required, ])],
@@ -39,7 +47,12 @@ export class AjoutComponent implements OnInit {
       ville:['', Validators.compose([Validators.required, ])],
     };
     this.magasinForm=this.formbuilder.group(patterns);
-
+    let patternsA={
+      affectedMagasinId:['', Validators.compose([Validators.required, ])],
+      affectedProduitId:['', Validators.compose([Validators.required, ])],
+      affectedQte:['', Validators.compose([Validators.required, ])],
+    };
+    this.affectationForm=this.formbuilder.group(patternsA);
 
 
   }
@@ -80,6 +93,7 @@ export class AjoutComponent implements OnInit {
       }
     });
   }
+
   deleteMagasin(id) {
     this.ajoutServie.deleteMagasin(id,(data) => {
       alert(data)
@@ -118,6 +132,26 @@ export class AjoutComponent implements OnInit {
   chargerMagasin(magasin: Magasin) {
     this.magasin=magasin;
     this.op="Modification";
+  }
+
+  affectShow() {
+    this.findService.getAllProduit((data) => {
+      this.produits=data;
+
+    });
+
+    this.showHide(false,false,true);
+  }
+
+  persistAffectation() {
+    if (this.affectation.qte==0){alert("Veillez saisir une quantité supérieur à 0.");}
+    this.ajoutServie.persistAffectation(this.affectation,(data) => {
+      if(data==1) {
+        alert("Produit affecté");
+      } else {
+        alert("Produit non affecté");
+      }
+    });
   }
 }
 

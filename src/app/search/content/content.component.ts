@@ -7,6 +7,7 @@ import {Produit} from '../../models/Produit';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from '../../models/Comment';
 import {AjoutService} from '../../services/ajout.service';
+import {Categorie} from '../../models/Categorie';
 
 @Component({
   selector: 'app-content',
@@ -15,7 +16,7 @@ import {AjoutService} from '../../services/ajout.service';
 })
 export class ContentComponent implements OnInit {
   magasins: any;
-  categories: string[];
+  categories: Categorie[];
   marques: string[];
   produits: any;
   selectedMagasinId: string;
@@ -23,8 +24,8 @@ export class ContentComponent implements OnInit {
   selectedMarques: string[];
   selectedPriceMin: any;
   selectedPriceMax: any;
-  searchText: any;
-  criteria:Search;
+  searchText: string;
+  criteria: Search;
   comment :Comment;
   selectedProduct:any;
   showCatalogue:boolean=true;
@@ -38,7 +39,10 @@ export class ContentComponent implements OnInit {
   ngOnInit(): void {
 
     this.selectedProductCaracteristiques={};
-    this.produits=new Array();
+    this.http.get<any>('http://localhost:8090/produit/').subscribe(data => {
+      this.produits=data;
+
+    });
     this.getMagasins();
     this.getCategories();
     this.getMarques();
@@ -61,6 +65,9 @@ export class ContentComponent implements OnInit {
 
   setText(): any {
     console.log(this.searchText);
+    this.http.get<any>('http://localhost:8090/produit/libelle/'+this.searchText).subscribe(data => {
+      this.produits = data;
+    });
     this.searchService.searchText = this.searchText;
   }
 
@@ -81,13 +88,14 @@ export class ContentComponent implements OnInit {
 
 
   public getMagasins() {
-    this.http.get<any>('http://localhost:8080/magasin/').subscribe(data => {
+    this.http.get<any>('http://localhost:8090/magasin/').subscribe(data => {
       this.magasins = data;
     });
   }
   public getMarques() {
-    this.http.get<any>('http://localhost:8080/produit/marques').subscribe(data => {
+    this.http.get<any>('http://localhost:8090/produit/marques').subscribe(data => {
       this.marques = data;
+
     });
   }
   // public getCategories() {
@@ -122,7 +130,7 @@ export class ContentComponent implements OnInit {
   }
 
    getCategories() {
-     this.http.get<any>('http://localhost:8080/produit/categories').subscribe(data => {
+     this.http.get<any>('http://localhost:8090/categorie/').subscribe(data => {
        this.categories = data;
      });
   }

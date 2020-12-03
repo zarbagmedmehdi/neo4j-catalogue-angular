@@ -14,10 +14,10 @@ import {Categorie} from "../../models/Categorie";
 export class AjoutProduitComponent implements OnInit {
   produit: Produit;
   magasins:Magasin[]=[];
-  selectedmagasins:Magasin[]=[];
-  magasinStock: number[]=[];
+  //selectedmagasins:Magasin[]=[];
+  //magasinStock: number[]=[];
   produitForm:FormGroup;
-  initialcategories: String[]=[];
+  initialcategories: Categorie[]=[];
   caracteristiques:string[]=[];
   valeurs:string[]=[];
 
@@ -27,9 +27,13 @@ export class AjoutProduitComponent implements OnInit {
   constructor(private formbuilder: FormBuilder,private findService:FindService,private  ajoutServie:AjoutService) { }
 
   ngOnInit(): void {
-    this.initialcategories=['Petit elecromenager','gros electromenager','entretien de la maison','santé beauté','tv','photo vidéo',
-      'informatique','pc','smartphone','tablette','jeux',];
-    this.produit={description:"",reference:"", libelle:"", prix:null, marque:"",magasins:[],categories:[],caracteristiques:new Map()};
+    this.findService.getAllCategories((don) => {
+      if(don!=[])
+      this.initialcategories=don
+
+    });
+
+    this.produit={description:"",reference:"", libelle:"", prix:null, marque:"",categories:[],caracteristiques:new Map()};
     let patterns3={
       reference:['', Validators.compose([Validators.required, ])],
       libelle:['', Validators.compose([Validators.required, ])],
@@ -38,38 +42,41 @@ export class AjoutProduitComponent implements OnInit {
       stock:['', Validators.compose([Validators.required, ])],
       description:['', Validators.compose([Validators.required, ])],
       nombreCaractere:['', Validators.compose([Validators.required, ])],
-      magasinsNames:['', Validators.compose([Validators.required, ])],
+      //magasinsNames:['', Validators.compose([Validators.required, ])],
       categories:['', Validators.compose([Validators.required, ])],
 
     };
     this.produitForm=this.formbuilder.group(patterns3);
-    this.findService.getAllMagasin((don) => {
-      this.magasins=don
-
-    });
+    // this.findService.getAllMagasin((don) => {
+    //   this.magasins=don
+    //
+    // });
   }
+
+
+
   persistProduit() {
     let map;
 
 
     let incorrect = false;
-    if (this.selectedmagasins.length > 0) {
+   // if (this.selectedmagasins.length > 0) {
       for (var _i = 0; _i < this.caracteristiques.length; _i++) {
         let key=this.caracteristiques[_i];
         console.log(key+this.valeurs[_i])
         this.produit.caracteristiques[key]=this.valeurs[_i];
         console.log(_i)
-      }
+    //  }
       console.log(JSON.stringify(this.produit.caracteristiques))
-      for (var index in this.selectedmagasins) {
-        if (this.magasinStock[index] == null) {
-          alert('Remplir les stock de tous les magasins');
-          incorrect = true;
-          break;
-        } else {
-          let mag: Mag = {magasinId: this.selectedmagasins[index].id, stock: this.magasinStock[index]};
-          this.produit.magasins.push(mag);
-        }
+      // for (var index in this.selectedmagasins) {
+      //   if (this.magasinStock[index] == null) {
+      //     alert('Remplir les stock de tous les magasins');
+      //     incorrect = true;
+      //     break;
+      //   } else {
+      //     let mag: Mag = {magasinId: this.selectedmagasins[index].id, stock: this.magasinStock[index]};
+      //     this.produit.magasins.push(mag);
+      //   }
       }
 
 
@@ -80,29 +87,29 @@ export class AjoutProduitComponent implements OnInit {
             console.log(JSON.stringify(this.produit))
 
             this.produitForm.reset();
-            this.selectedmagasins=[];
-            this.magasinStock=[];
+            //this.selectedmagasins=[];
+           // this.magasinStock=[];
           } else {
             alert("Produit  non enregistré");
             this.produitForm.reset();
-            this.selectedmagasins=[];
-            this.magasinStock=[];
+           // this.selectedmagasins=[];
+         //   this.magasinStock=[];
           }
         });
       } }
 
 
 
-  }
+
 
   see(){
     console.log(JSON.stringify(this.produit.caracteristiques))
 
   }
 
-  clean() {
-    this.magasinStock=[];
-  }
+  // clean() {
+  //   this.magasinStock=[];
+  // }
   changeListener($event) : void {
     this.readThis($event.target);
   }

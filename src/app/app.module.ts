@@ -10,6 +10,10 @@ import {SearchService} from './services/search.service';
 import {HttpClientModule} from '@angular/common/http';
 import { AjoutComponent } from './magasin/ajout/ajout.component';
 import { AjoutProduitComponent } from './produit/ajout-produit/ajout-produit.component';
+import { CategorieComponent } from './categorie/categorie.component';
+import { LoginComponent } from './login/login.component';
+import { PanierComponent } from './panier/panier.component';
+import { MesCommandesComponent } from './mes-commandes/mes-commandes.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +24,15 @@ import { AjoutProduitComponent } from './produit/ajout-produit/ajout-produit.com
     AjoutComponent,
 
     AjoutProduitComponent,
+
+    CategorieComponent,
+
+    LoginComponent,
+
+    PanierComponent,
+
+    MesCommandesComponent,
+
   ],
   imports: [
     BrowserModule,

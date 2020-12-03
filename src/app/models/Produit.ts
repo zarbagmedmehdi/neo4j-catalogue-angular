@@ -1,17 +1,20 @@
+import {Categorie} from './Categorie';
+
 export interface Mag {
   magasinId:string;
   stock:number;
 }
 
 export interface Produit {
-  productId?:string;
+  id?:number;
   image?:string;
   reference:string;
   libelle:string;
   prix:number;
   description:string;
   marque:string;
-  categories :string[];
-  magasins:Mag[];
+  categories :Categorie[];
+  magasins?:Mag[];
   caracteristiques?:Map<string, string>;
+
 }

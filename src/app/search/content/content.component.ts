@@ -8,6 +8,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Comment} from '../../models/Comment';
 import {AjoutService} from '../../services/ajout.service';
 import {Categorie} from '../../models/Categorie';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-content',
@@ -18,7 +19,7 @@ export class ContentComponent implements OnInit {
   magasins: any;
   categories: Categorie[];
   marques: string[];
-  produits: any;
+  produits: any=[];
   selectedMagasinId: string;
   selectedCategorie: string;
   selectedMarques: string[];
@@ -31,13 +32,17 @@ export class ContentComponent implements OnInit {
   showCatalogue:boolean=true;
   selectedProductCaracteristiques: any;
   selectedProductStarsMean:number;
+  nbItem:number=0;
+  commandesItem:Array<any>=[];
 
-
-  constructor(private ajoutService :AjoutService,private formbuilder: FormBuilder,private http: HttpClient, private searchService: SearchService) {
+  constructor(private router:Router,private ajoutService :AjoutService,private formbuilder: FormBuilder,private http: HttpClient, private searchService: SearchService) {
   }
 
   ngOnInit(): void {
-
+    if(!localStorage.getItem("id")
+    )
+    {this.router.navigate([""]);console.log('null')}
+this.nom=localStorage.getItem("id")+": "+localStorage.getItem("nom");
     this.selectedProductCaracteristiques={};
     this.http.get<any>('http://localhost:8090/produit/').subscribe(data => {
       this.produits=data;
@@ -61,6 +66,10 @@ export class ContentComponent implements OnInit {
     this.selectedMarques=null;
     this.selectedPriceMin=null;
     this.selectedPriceMax=null;
+    this.http.get<any>('http://localhost:8090/produit/').subscribe(data => {
+      this.produits=data;
+
+    });
   }
 
   setText(): any {
@@ -105,6 +114,7 @@ export class ContentComponent implements OnInit {
   //   });
   // }
   commentForm: FormGroup;
+  nom: any;
 
   findProductByMagasin(magasinId: any) {
     console.log(magasinId);
@@ -142,26 +152,14 @@ export class ContentComponent implements OnInit {
 
 
   findProductsByCriteria(){
-    // let httpParams = new HttpParams();
 
-    // httpParams.append('magasinId', this.selectedMagasinId);
-    // httpParams.append('categorie', this.selectedCategorie);
-    // // @ts-ignore
-    // httpParams.append('marques', this.selectedMarques);
-    // httpParams.append('priceMin', this.selectedPriceMin);
-    //  httpParams.append('priceMax', this.selectedPriceMax);
+let cc=   {magasinId:this.selectedMagasinId, categorie:this.selectedCategorie,
+  marques:this.selectedMarques, priceMin:this.selectedPriceMin, priceMax:this.selectedPriceMax
+};
+console.log(cc);
 
-
-
-    this.http.post<any>(
-      'http://localhost:8080/produit/criteria',
-      {
-        magasinId:this.selectedMagasinId,
-        categorie:this.selectedCategorie,
-        marques:this.selectedMarques,
-        priceMin:this.selectedPriceMin,
-        priceMax:this.selectedPriceMax
-      }
+  this.http.post<any>(
+      'http://localhost:8090/produit/criteria', cc
       ).subscribe(data => {
       this.produits=data;
 
@@ -179,7 +177,7 @@ export class ContentComponent implements OnInit {
     this.findProductsByCriteria();
   }
   setSelectedCategorie(categorie: any): any {
-    this.selectedCategorie = categorie;
+    this.selectedCategorie = categorie.libelle;
     this.findProductsByCriteria();
   }
 
@@ -237,5 +235,25 @@ export class ContentComponent implements OnInit {
       }
       this.selectedProductStarsMean/=commentaires.length;
     }
+  }
+
+  ajoutAuPanier() {
+    localStorage.getItem("id");
+    console.log(this.selectedProduct)
+    let commandeItem={qte:this.nbItem,produit:{id:this.selectedProduct.id}};
+    this.commandesItem.push(commandeItem);
+console.log(this.commandesItem);
+alert("Commande item ajouter");
+  }
+
+  deconnecter() {
+    localStorage.removeItem("id");
+    localStorage.removeItem("nom");
+
+    this.router.navigate([''])
+  }
+
+  showPanier() {
+    this.router.navigate(['panier', { commandesItems: JSON.stringify(this.commandesItem )}]);
   }
 }

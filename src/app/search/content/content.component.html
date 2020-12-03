@@ -1,3 +1,14 @@
+<div style="margin-top: 70px;" class=" mt-20 d-flex justify-content-center">
+
+  <h2 class="mt-20">Intefrace Client:</h2>
+</div>
+<div class=" mt-10 d-flex justify-content-center">
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button"  disabled class="btn btn-primary">{{nom}}</button>
+    <button type="button" (click)="showPanier()"class="btn btn-primary">Panier</button>
+    <button type="button" (click)="deconnecter()"class="btn btn-primary">deconnecter</button>
+  </div>
+</div>
 <div class="app-content content">
   <div class="content-overlay"></div>
   <div class="header-navbar-shadow"></div>
@@ -154,14 +165,17 @@
                   <p>{{selectedProduct.description}}</p>
                   <label class="font-weight-bold">Categories</label>
                   <ul>
-                    <li *ngFor="let c of selectedProduct.categories">{{c}}
+                    <li *ngFor="let c of selectedProduct.categories">{{c.libelle}}
                     </li>
                   </ul>
 
                   <hr>
-
+                  <select [(ngModel)]="nbItem">
+                  <option *ngFor="let i of [1,2,3,4,5]; "
+                          [ngValue]="i"   >{{i}}</option>
+                  </select>
                   <div class="d-flex flex-column flex-sm-row">
-                    <button class="btn btn-primary mr-0 mr-sm-1 mb-1 mb-sm-0" disabled><i
+                    <button (click)="ajoutAuPanier()" class="btn btn-primary mr-0 mr-sm-1 mb-1 mb-sm-0" ><i
                       class="feather icon-shopping-cart mr-25"></i>Ajouter au panier
                     </button>
                   </div>

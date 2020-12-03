@@ -1,0 +1,52 @@
+<div class=" mt-20 row justify-content-center ">
+  <h2 class="">Table des commandesItems :</h2>
+</div>
+<div class="row">
+<div class="col-md-3 "></div>
+
+  <div class="col-md-7 mt-5 ">
+    <table *ngIf="commandesItems.length>0" class="table  table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">Image</th>
+        <th scope="col">l'id produit</th>
+        <th scope="col">Libelle Produit</th>
+        <th scope="col">Quantite</th>
+        <th scope="col">prix Unitaire</th>
+        <th scope="col">prix total</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr  *ngFor="let cmd of commandesItems ;let index = index; ">
+
+        <th *ngIf="products[index]" scope="row"><img src="{{products[index].image}}" height="40" width="40" class="avatar"></th>
+        <th *ngIf="!products[index]" scope="row">en cours de chargement</th>
+        <th scope="row">{{cmd.produit.id}}</th>
+        <th *ngIf="products[index]" scope="row">{{products[index].libelle}}</th>
+        <th *ngIf="!products[index]" scope="row">en cours de chargement</th>
+        <th scope="row">{{cmd.qte}}</th>
+        <th *ngIf="products[index]" scope="row">{{products[index].prix}}</th>
+        <th *ngIf="!products[index]" scope="row">en cours de chargement</th>
+        <th *ngIf="products[index]" scope="row">{{products[index].prix* cmd.qte }}</th>
+        <th *ngIf="!products[index]" scope="row">en cours de chargement</th>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+    <div *ngIf="commandesItems.length!=0">
+      <h4 class=" ml-5 mt-20">Somme total de votre commande est de:{{sommeTotal}}DH TTC</h4>
+
+    </div>
+  <div *ngIf="commandesItems.length!=0">
+    <button (click)="valider()" class="btn btn-primary ml-5 mt-20">Valider Commande</button>
+
+  </div>
+  </div>
+  <div *ngIf="commandesItems.length==0">
+    <h4 class="mt-20">Aucune commandeItem</h4>
+
+  </div>
+
+
